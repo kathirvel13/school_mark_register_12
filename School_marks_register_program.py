@@ -17,25 +17,23 @@ def get_rowelements(rownum):
         rowlst.append(row[rownum])
     return rowlst
 
-def unique_rollno(prompt):
-    rno = 0
-    rnolst = get_rowelements(0)
-    while rno in rnolst or rno <=0:
-        rno = int(input(prompt))
-    return rno
-
 def get_mark(prompt):
-    mark = -1
-    while mark > 100 or mark < 0:
-        mark = int(input(prompt))
-    return mark
+    while True:
+        try:
+            mark = -1
+            while mark > 100 or mark < 0:
+                mark = int(input(prompt))
+        except:
+            continue
+        else:
+            return mark
 
 def add_student():
     no = int(input("Number of students to be added- "))
 
     for i in range(no):
         name = input(f"Enter name of Student {i+1}- ")
-        roll = unique_rollno(f'Enter Roll number of Student {i+1}- ')
+        roll = int(input((f'Enter Roll number of Student {i+1}- ')))
         eng = get_mark(f'Enter English Mark of Student {i+1}- ')
         math = get_mark(f'Enter Maths Mark of Student {i+1}- ')
         phy = get_mark(f'Enter Physics Mark of Student {i+1}- ')
@@ -43,7 +41,7 @@ def add_student():
         cs = get_mark(f'Enter CS Mark of Student {i+1}- ')
         print()
         wr.writerow([roll, name, eng, math, phy, chem, cs])
-    f.flush()
+        f.flush()
 
 def print_data():
     f.seek(0)
