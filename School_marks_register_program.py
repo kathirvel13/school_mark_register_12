@@ -3,11 +3,13 @@ import csv
 classno = input("Enter class and section- ")
 
 f = open(f"{classno}_Student_List.csv", "a+", newline='')
+rowcount = len(list(csv.reader(f)))
 wr = csv.writer(f)
 
 f.seek(0)
 if list(csv.reader(f)) == []:
     wr.writerow(['Roll_no', 'Name', "English", "Maths", "Physics", "Chemistry", "Computer"])
+    f.flush()
 
 def get_rowelements(rownum):
     # This function returns a list having all elements in a row when we mention the row's index number
@@ -30,10 +32,12 @@ def get_mark(prompt):
 
 def add_student():
     no = int(input("Number of students to be added- "))
+    global rowcount
 
     for i in range(no):
+        rowcount += 1
         name = input(f"Enter name of Student {i+1}- ")
-        roll = int(input((f'Enter Roll number of Student {i+1}- ')))
+        roll = rowcount + 1
         eng = get_mark(f'Enter English Mark of Student {i+1}- ')
         math = get_mark(f'Enter Maths Mark of Student {i+1}- ')
         phy = get_mark(f'Enter Physics Mark of Student {i+1}- ')
@@ -58,10 +62,12 @@ def print_data():
     
 def rem_student(rele):
     f.seek(0)
+    global rowcount
     data = list(csv.reader(f))
     for i in range(len(data))[1:]:
         if int(data[i][0]) == rele:
             print('Data of student removed from list-', data.pop(i))
+            rowcount -= 1
             break
     else:
         print("Roll number not found!")
