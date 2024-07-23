@@ -3,16 +3,19 @@ import csv
 classno = input("Enter class and section- ")
 
 f = open(f"{classno}_Student_List.csv", "a+", newline='')
-rowcount = len(list(csv.reader(f)))
+f.seek(0)
+rowcount = len(list(csv.reader(f))) - 2
 wr = csv.writer(f)
 
 f.seek(0)
 if list(csv.reader(f)) == []:
     wr.writerow(['Roll_no', 'Name', "English", "Maths", "Physics", "Chemistry", "Computer"])
+    rowcount += 1
     f.flush()
 
 def get_rowelements(rownum):
     # This function returns a list having all elements in a row when we mention the row's index number
+    f.seek(0)
     data = list(csv.reader(f))[1:]
     rowlst = []
     for row in data:
