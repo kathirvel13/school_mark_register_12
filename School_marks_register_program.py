@@ -34,7 +34,7 @@ def get_mark(prompt):
             return mark
 
 def add_student():
-    no = int(input("Number of students to be added- "))
+    no = get_mark("Number of students to be added- ")
     global rowcount
 
     for i in range(no):
@@ -54,13 +54,15 @@ def print_data():
     f.seek(0)
     data = list(csv.reader(f))
     #print(data, type(data), list(data))
-    print('Roll_no', 'Name', "English", "Maths", "Physics", "Chemistry", "Computer", end="\t\t")
-    print()
+    print('Roll_no ', 'Name  ', "English ", "Maths ", "Physics ", "Chemistry", "Computer", "Total", sep="  ")
     for ls in data[1:]:
         #print(i)
         for j in ls:
-            print(j, end="\t")
-        print()
+            print(j, end="        ")
+        s = 0
+        for x in range(2, 7):
+            s += int(ls[x])
+        print(s)
     print()
     
 def rem_student(rele):
@@ -80,6 +82,21 @@ def rem_student(rele):
         csv.writer(rwf).writerows(data)
     print()
 
+def mark_statistic():
+    f.seek(0)
+    global rowcount
+    SubjectMarkDict = {}
+    SubjectNames = ["English  ", "Maths    ", "Physics  ", "Chemistry", "Computer "]
+    for i in range(2, 7):
+        SubjectMarkDict[SubjectNames[i-2]] = get_rowelements(i)
+    try:
+        print("Subject", "  Max. mark", "Min. mark", sep="\t\t")
+        for subject, markls in SubjectMarkDict.items():
+            print(subject, max(markls), min(markls), sep='\t\t')
+    except ValueError:
+            print("File is Empty!")
+    print()
+
 def instruction():
     print('''Welcome to Student Register!
 Press respective option number to use service.
@@ -87,7 +104,8 @@ Press respective option number to use service.
     1. Add student to list.
     2. Display data in list.
     3. Remove a student from list.
-    4. Exit''')
+    4. Display Highest mark and Lowest Mark in each subject.
+    5. Exit''')
     print()
 
 instruction()
@@ -101,6 +119,8 @@ while True:
     elif n == 3:
         rem_student(int(input("Enter roll number of student to be removed- ")))
     elif n == 4:
+        mark_statistic()
+    elif n == 5:
         print("Thank you!")
         break
     elif n == 0:
